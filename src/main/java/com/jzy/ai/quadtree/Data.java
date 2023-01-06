@@ -2,29 +2,31 @@ package com.jzy.ai.quadtree;
 
 /**
  * 数据
+ *
  * @author JiangZhiYong
  * @mail 359135103@qq.com
  */
-public abstract class Data<T> implements Comparable<Data<T>>{
-	
-	private T value;
+public abstract class Data<T> implements Comparable<Data<T>> {
 
-	public Data(T value) {
-		super();
-		this.value = value;
-	}
+    private T value;
 
-	/**
-	 * 获取数据
-	 * @return
-	 */
-	public T getValue() {
-		return value;
-	}
+    public Data(T value) {
+        super();
+        this.value = value;
+    }
 
-	public void setValue(T value) {
-		this.value = value;
-	}
-	
-	
+    /**
+     * 获取数据
+     *
+     * @return
+     */
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+
 }

@@ -1,14 +1,14 @@
 package com.jzy.ai.btree;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 行为树 <br>
- * 
+ *
  * @author implicit-invocation
  * @author davebaol
  * @fix JiangZhiYong
@@ -16,17 +16,22 @@ import org.slf4j.LoggerFactory;
  */
 public class BehaviorTree<E> extends Task<E> {
     private static final Logger LOGGER = LoggerFactory.getLogger(BehaviorTree.class);
-
-    /** 根任务 */
-    private Task<E> rootTask;
-
-    /** 行为树所属对象 */
-    private E object;
-
-    /** 监听器 */
+    /**
+     * 监听器
+     */
     public List<Listener<E>> listeners;
-    /**安全监测*/
+    /**
+     * 安全监测
+     */
     GuardEvaluator<E> guardEvaluator;
+    /**
+     * 根任务
+     */
+    private Task<E> rootTask;
+    /**
+     * 行为树所属对象
+     */
+    private E object;
 
     /**
      * Creates a {@code BehaviorTree} with no root task and no blackboard object. Both the root task and the blackboard
@@ -41,7 +46,7 @@ public class BehaviorTree<E> extends Task<E> {
      * Creates a behavior tree with a root task and no blackboard object. Both the root task and the blackboard object
      * must be set before running this behavior tree, see {@link #addChild(Task) addChild()} and
      * {@link #setObject(Object) setObject()} respectively.
-     * 
+     *
      * @param rootTask the root task of this tree. It can be {@code null}.
      */
     public BehaviorTree(Task<E> rootTask) {
@@ -52,9 +57,9 @@ public class BehaviorTree<E> extends Task<E> {
      * Creates a behavior tree with a root task and a blackboard object. Both the root task and the blackboard object
      * must be set before running this behavior tree, see {@link #addChild(Task) addChild()} and
      * {@link #setObject(Object) setObject()} respectively.
-     * 
+     *
      * @param rootTask the root task of this tree. It can be {@code null}.
-     * @param object the blackboard. It can be {@code null}.
+     * @param object   the blackboard. It can be {@code null}.
      */
     public BehaviorTree(Task<E> rootTask, E object) {
         this.rootTask = rootTask;
@@ -63,7 +68,9 @@ public class BehaviorTree<E> extends Task<E> {
         this.guardEvaluator = new GuardEvaluator<E>(this);
     }
 
-    /** Returns the blackboard object of this behavior tree. */
+    /**
+     * Returns the blackboard object of this behavior tree.
+     */
     @Override
     public E getObject() {
         return object;
@@ -71,7 +78,7 @@ public class BehaviorTree<E> extends Task<E> {
 
     /**
      * Sets the blackboard object of this behavior tree.
-     * 
+     *
      * @param object the new blackboard
      */
     public void setObject(E object) {
@@ -80,7 +87,7 @@ public class BehaviorTree<E> extends Task<E> {
 
     /**
      * This method will add a child, namely the root, to this behavior tree.
-     * 
+     *
      * @param child the root task to add
      * @return the index where the root task has been added (always 0).
      * @throws IllegalStateException if the root task is already set.
@@ -142,13 +149,14 @@ public class BehaviorTree<E> extends Task<E> {
 
     /**
      * 通知添加子任务
-     * 
-     * @author JiangZhiYong
-     * @QQ 359135103 2017年11月22日 下午4:00:00
+     *
      * @param task
      * @param index
+     * @author JiangZhiYong
+     * @QQ 359135103 2017年11月22日 下午4:00:00
      */
     public void notifyChildAdded(Task<E> task, int index) {
+        // 遍历所有监听器
         for (Listener<E> listener : listeners) {
             listener.childAdded(task, index);
         }
@@ -156,11 +164,11 @@ public class BehaviorTree<E> extends Task<E> {
 
     /**
      * 通知任务更新
-     * 
-     * @author JiangZhiYong
-     * @QQ 359135103 2017年11月22日 下午5:04:00
+     *
      * @param task
      * @param previousStatus
+     * @author JiangZhiYong
+     * @QQ 359135103 2017年11月22日 下午5:04:00
      */
     public void notifyStatusUpdated(Task<E> task, Status previousStatus) {
         for (Listener<E> listener : listeners) {
@@ -178,7 +186,8 @@ public class BehaviorTree<E> extends Task<E> {
     }
 
     @Override
-    public void run() {}
+    public void run() {
+    }
 
     @Override
     public void resetTask() {
@@ -188,10 +197,10 @@ public class BehaviorTree<E> extends Task<E> {
 
     /**
      * 添加监听器
-     * 
+     *
+     * @param listener
      * @author JiangZhiYong
      * @QQ 359135103 2017年11月22日 下午5:39:57
-     * @param listener
      */
     public void addListener(Listener<E> listener) {
         if (listeners == null) {
@@ -214,20 +223,20 @@ public class BehaviorTree<E> extends Task<E> {
 
     /**
      * 行为树事件
-     * 
+     *
+     * @param <E>
      * @author JiangZhiYong
      * @QQ 359135103 2017年11月22日 下午3:50:50
-     * @param <E>
      */
     public interface Listener<E> {
 
         /**
          * 状态更新
-         * 
-         * @author JiangZhiYong
-         * @QQ 359135103 2017年11月22日 下午3:52:23
+         *
          * @param task
          * @param previousStatus 之前状态
+         * @author JiangZhiYong
+         * @QQ 359135103 2017年11月22日 下午3:52:23
          */
         default void statusUpdated(Task<E> task, Status previousStatus) {
 
@@ -235,11 +244,11 @@ public class BehaviorTree<E> extends Task<E> {
 
         /**
          * 添加子任务
-         * 
+         *
+         * @param task  子任务
+         * @param index 子任务位置
          * @author JiangZhiYong
          * @QQ 359135103 2017年11月22日 下午3:55:20
-         * @param task 子任务
-         * @param index 子任务位置
          */
         default void childAdded(Task<E> task, int index) {
 
@@ -247,11 +256,17 @@ public class BehaviorTree<E> extends Task<E> {
 
     }
 
+    /**
+     * 安全监测
+     *
+     * @param <E>
+     */
     private static final class GuardEvaluator<E> extends Task<E> {
 
         // No argument constructor useful for Kryo serialization
         @SuppressWarnings("unused")
-        public GuardEvaluator() {}
+        public GuardEvaluator() {
+        }
 
         public GuardEvaluator(BehaviorTree<E> tree) {
             this.tree = tree;
@@ -273,16 +288,20 @@ public class BehaviorTree<E> extends Task<E> {
         }
 
         @Override
-        public void run() {}
+        public void run() {
+        }
 
         @Override
-        public void childSuccess(Task<E> task) {}
+        public void childSuccess(Task<E> task) {
+        }
 
         @Override
-        public void childFail(Task<E> task) {}
+        public void childFail(Task<E> task) {
+        }
 
         @Override
-        public void childRunning(Task<E> runningTask, Task<E> reporter) {}
+        public void childRunning(Task<E> runningTask, Task<E> reporter) {
+        }
 
     }
 

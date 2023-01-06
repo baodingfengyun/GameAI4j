@@ -5,7 +5,7 @@ import com.jzy.ai.pfa.Heuristic;
 
 /**
  * 多边形消耗计算
- * 
+ *
  * @author JiangZhiYong
  * @date 2018年2月20日
  * @mail 359135103@qq.com

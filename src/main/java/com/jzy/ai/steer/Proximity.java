@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2014 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -64,34 +64,45 @@ import com.jzy.javalib.math.geometry.Vector;
  * deal with lots of agents. Especially, if you're using Bullet or Box2d in your game, it's recommended to implement proximities
  * that exploit their methods to query the world. Both Bullet and Box2d internally use some kind of spatial partitioning.</li>
  * </ul>
- * 
+ *
  * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
- * 
- * @author davebaol */
+ * @author davebaol
+ */
 public interface Proximity<T extends Vector<T>> {
 
-	/** Returns the owner of this proximity. */
-	public Steerable<T> getOwner();
+    /**
+     * Returns the owner of this proximity.
+     */
+    public Steerable<T> getOwner();
 
-	/** Sets the owner of this proximity. */
-	public void setOwner(Steerable<T> owner);
+    /**
+     * Sets the owner of this proximity.
+     */
+    public void setOwner(Steerable<T> owner);
 
-	/** Finds the agents that are within the immediate area of the owner. Each of those agents is passed to the
-	 * {@link ProximityCallback#reportNeighbor(Steerable) reportNeighbor} method of the specified callback.
-	 * @return the number of neighbors found. */
-	public int findNeighbors(ProximityCallback<T> callback);
+    /**
+     * Finds the agents that are within the immediate area of the owner. Each of those agents is passed to the
+     * {@link ProximityCallback#reportNeighbor(Steerable) reportNeighbor} method of the specified callback.
+     *
+     * @return the number of neighbors found.
+     */
+    public int findNeighbors(ProximityCallback<T> callback);
 
-	/** The callback object used by a proximity to report the owner's neighbor.
-	 *
-	 * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
-	 *
-	 * @author davebaol */
-	public interface ProximityCallback<T extends Vector<T>> {
+    /**
+     * The callback object used by a proximity to report the owner's neighbor.
+     *
+     * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
+     * @author davebaol
+     */
+    public interface ProximityCallback<T extends Vector<T>> {
 
-		/** The callback method used to report a neighbor.
-		 * @param neighbor the reported neighbor.
-		 * @return {@code true} if the given neighbor is valid; {@code false} otherwise. */
-		public boolean reportNeighbor(Steerable<T> neighbor);
+        /**
+         * The callback method used to report a neighbor.
+         *
+         * @param neighbor the reported neighbor.
+         * @return {@code true} if the given neighbor is valid; {@code false} otherwise.
+         */
+        public boolean reportNeighbor(Steerable<T> neighbor);
 
-	}
+    }
 }

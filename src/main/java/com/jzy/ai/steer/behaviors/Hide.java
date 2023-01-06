@@ -24,7 +24,8 @@ import com.jzy.ai.steer.SteeringAcceleration;
 import com.jzy.ai.util.Location;
 import com.jzy.javalib.math.geometry.Vector;
 
-/** This behavior attempts to position a owner so that an obstacle is always between itself and the agent (the hunter) it's trying
+/**
+ * This behavior attempts to position a owner so that an obstacle is always between itself and the agent (the hunter) it's trying
  * to hide from. First the distance to each of these obstacles is determined. Then the owner uses the arrive behavior to steer
  * toward the closest one. If no appropriate obstacles can be found, no steering is returned.
  * <p>
@@ -54,166 +55,192 @@ import com.jzy.javalib.math.geometry.Vector;
  * </ul>
  *
  * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
- *
- * @author davebaol */
+ * @author davebaol
+ */
 public class Hide<T extends Vector<T>> extends Arrive<T> implements Proximity.ProximityCallback<T> {
 
-	/** The proximity to find nearby obstacles. */
-	protected Proximity<T> proximity;
+    /**
+     * The proximity to find nearby obstacles.
+     */
+    protected Proximity<T> proximity;
 
-	/** The distance from the boundary of the obstacle behind which to hide. */
-	protected float distanceFromBoundary;
+    /**
+     * The distance from the boundary of the obstacle behind which to hide.
+     */
+    protected float distanceFromBoundary;
 
-	private T toObstacle;
-	private T bestHidingSpot;
-	private float distance2ToClosest;
+    private T toObstacle;
+    private T bestHidingSpot;
+    private float distance2ToClosest;
 
-	/** Creates an {@code Hide} behavior for the specified owner.
-	 * @param owner the owner of this behavior */
-	public Hide(Steerable<T> owner) {
-		this(owner, null);
-	}
+    /**
+     * Creates an {@code Hide} behavior for the specified owner.
+     *
+     * @param owner the owner of this behavior
+     */
+    public Hide(Steerable<T> owner) {
+        this(owner, null);
+    }
 
-	/** Creates a {@code Hide} behavior for the specified owner and target.
-	 * @param owner the owner of this behavior
-	 * @param target the target of this behavior */
-	public Hide(Steerable<T> owner, Location<T> target) {
-		this(owner, target, null);
-	}
+    /**
+     * Creates a {@code Hide} behavior for the specified owner and target.
+     *
+     * @param owner  the owner of this behavior
+     * @param target the target of this behavior
+     */
+    public Hide(Steerable<T> owner, Location<T> target) {
+        this(owner, target, null);
+    }
 
-	/** Creates a {@code Hide} behavior for the specified owner, target and proximity.
-	 * @param owner the owner of this behavior
-	 * @param target the target of this behavior
-	 * @param proximity the proximity to find nearby obstacles */
-	public Hide(Steerable<T> owner, Location<T> target, Proximity<T> proximity) {
-		super(owner, target);
-		this.proximity = proximity;
+    /**
+     * Creates a {@code Hide} behavior for the specified owner, target and proximity.
+     *
+     * @param owner     the owner of this behavior
+     * @param target    the target of this behavior
+     * @param proximity the proximity to find nearby obstacles
+     */
+    public Hide(Steerable<T> owner, Location<T> target, Proximity<T> proximity) {
+        super(owner, target);
+        this.proximity = proximity;
 
-		this.bestHidingSpot = newVector(owner);
-		this.toObstacle = null; // Set to null since we'll reuse steering.linear for this vector
-	}
+        this.bestHidingSpot = newVector(owner);
+        this.toObstacle = null; // Set to null since we'll reuse steering.linear for this vector
+    }
 
-	@Override
-	protected SteeringAcceleration<T> calculateRealSteering (SteeringAcceleration<T> steering) {
-		// Initialize member variables used by the callback
-		this.distance2ToClosest = Float.POSITIVE_INFINITY;
-		this.toObstacle = steering.linear;
+    @Override
+    protected SteeringAcceleration<T> calculateRealSteering(SteeringAcceleration<T> steering) {
+        // Initialize member variables used by the callback
+        this.distance2ToClosest = Float.POSITIVE_INFINITY;
+        this.toObstacle = steering.linear;
 
-		// Find neighbors (the obstacles) using this behavior as callback
-		int neighborsCount = proximity.findNeighbors(this);
+        // Find neighbors (the obstacles) using this behavior as callback
+        int neighborsCount = proximity.findNeighbors(this);
 
-		// If no suitable obstacles found return no steering otherwise use Arrive on the hiding spot
-		return neighborsCount == 0 ? steering.setZero() : arrive(steering, bestHidingSpot);
-	}
+        // If no suitable obstacles found return no steering otherwise use Arrive on the hiding spot
+        return neighborsCount == 0 ? steering.setZero() : arrive(steering, bestHidingSpot);
+    }
 
-	@Override
-	public boolean reportNeighbor (Steerable<T> neighbor) {
-		// Calculate the position of the hiding spot for this obstacle
-		T hidingSpot = getHidingPosition(neighbor.getPosition(), neighbor.getBoundingRadius(), target.getPosition());
+    @Override
+    public boolean reportNeighbor(Steerable<T> neighbor) {
+        // Calculate the position of the hiding spot for this obstacle
+        T hidingSpot = getHidingPosition(neighbor.getPosition(), neighbor.getBoundingRadius(), target.getPosition());
 
-		// Work in distance-squared space to find the closest hiding
-		// spot to the owner
-		float distance2 = hidingSpot.dst2(owner.getPosition());
-		if (distance2 < distance2ToClosest) {
-			distance2ToClosest = distance2;
-			bestHidingSpot.set(hidingSpot);
-			return true;
-		}
+        // Work in distance-squared space to find the closest hiding
+        // spot to the owner
+        float distance2 = hidingSpot.dst2(owner.getPosition());
+        if (distance2 < distance2ToClosest) {
+            distance2ToClosest = distance2;
+            bestHidingSpot.set(hidingSpot);
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/** Returns the proximity used to find nearby obstacles. */
-	public Proximity<T> getProximity () {
-		return proximity;
-	}
+    /**
+     * Returns the proximity used to find nearby obstacles.
+     */
+    public Proximity<T> getProximity() {
+        return proximity;
+    }
 
-	/** Sets the proximity used to find nearby obstacles.
-	 * @param proximity the proximity to set
-	 * @return this behavior for chaining. */
-	public Hide<T> setProximity (Proximity<T> proximity) {
-		this.proximity = proximity;
-		return this;
-	}
+    /**
+     * Sets the proximity used to find nearby obstacles.
+     *
+     * @param proximity the proximity to set
+     * @return this behavior for chaining.
+     */
+    public Hide<T> setProximity(Proximity<T> proximity) {
+        this.proximity = proximity;
+        return this;
+    }
 
-	/** Returns the distance from the boundary of the obstacle behind which to hide. */
-	public float getDistanceFromBoundary () {
-		return distanceFromBoundary;
-	}
+    /**
+     * Returns the distance from the boundary of the obstacle behind which to hide.
+     */
+    public float getDistanceFromBoundary() {
+        return distanceFromBoundary;
+    }
 
-	/** Sets the distance from the boundary of the obstacle behind which to hide.
-	 * @param distanceFromBoundary the distance to set
-	 * @return this behavior for chaining. */
-	public Hide<T> setDistanceFromBoundary (float distanceFromBoundary) {
-		this.distanceFromBoundary = distanceFromBoundary;
-		return this;
-	}
+    /**
+     * Sets the distance from the boundary of the obstacle behind which to hide.
+     *
+     * @param distanceFromBoundary the distance to set
+     * @return this behavior for chaining.
+     */
+    public Hide<T> setDistanceFromBoundary(float distanceFromBoundary) {
+        this.distanceFromBoundary = distanceFromBoundary;
+        return this;
+    }
 
-	/** Given the position of a target and the position and radius of an obstacle, this method calculates a position
-	 * {@code distanceFromBoundary} away from the object's bounding radius and directly opposite the target. It does this by scaling
-	 * the normalized "to obstacle" vector by the required distance away from the center of the obstacle and then adding the result
-	 * to the obstacle's position.
-	 * @param obstaclePosition
-	 * @param obstacleRadius
-	 * @param targetPosition
-	 * @return the hiding position behind the obstacle. */
-	protected T getHidingPosition (T obstaclePosition, float obstacleRadius, T targetPosition) {
-		// Calculate how far away the agent is to be from the chosen
-		// obstacle's bounding radius
-		float distanceAway = obstacleRadius + distanceFromBoundary;
+    /**
+     * Given the position of a target and the position and radius of an obstacle, this method calculates a position
+     * {@code distanceFromBoundary} away from the object's bounding radius and directly opposite the target. It does this by scaling
+     * the normalized "to obstacle" vector by the required distance away from the center of the obstacle and then adding the result
+     * to the obstacle's position.
+     *
+     * @param obstaclePosition
+     * @param obstacleRadius
+     * @param targetPosition
+     * @return the hiding position behind the obstacle.
+     */
+    protected T getHidingPosition(T obstaclePosition, float obstacleRadius, T targetPosition) {
+        // Calculate how far away the agent is to be from the chosen
+        // obstacle's bounding radius
+        float distanceAway = obstacleRadius + distanceFromBoundary;
 
-		// Calculate the normalized vector toward the obstacle from the target
-		toObstacle.set(obstaclePosition).sub(targetPosition).nor();
+        // Calculate the normalized vector toward the obstacle from the target
+        toObstacle.set(obstaclePosition).sub(targetPosition).nor();
 
-		// Scale it to size and add to the obstacle's position to get
-		// the hiding spot.
-		return toObstacle.scl(distanceAway).add(obstaclePosition);
-	}
+        // Scale it to size and add to the obstacle's position to get
+        // the hiding spot.
+        return toObstacle.scl(distanceAway).add(obstaclePosition);
+    }
 
-	//
-	// Setters overridden in order to fix the correct return type for chaining
-	//
+    //
+    // Setters overridden in order to fix the correct return type for chaining
+    //
 
-	@Override
-	public Hide<T> setOwner (Steerable<T> owner) {
-		this.owner = owner;
-		return this;
-	}
+    @Override
+    public Hide<T> setOwner(Steerable<T> owner) {
+        this.owner = owner;
+        return this;
+    }
 
-	@Override
-	public Hide<T> setEnabled (boolean enabled) {
-		this.enabled = enabled;
-		return this;
-	}
+    @Override
+    public Hide<T> setEnabled(boolean enabled) {
+        this.enabled = enabled;
+        return this;
+    }
 
-	@Override
-	public Hide<T> setLimiter (Limiter limiter) {
-		this.limiter = limiter;
-		return this;
-	}
+    @Override
+    public Hide<T> setLimiter(Limiter limiter) {
+        this.limiter = limiter;
+        return this;
+    }
 
-	@Override
-	public Hide<T> setTarget (Location<T> target) {
-		this.target = target;
-		return this;
-	}
+    @Override
+    public Hide<T> setTarget(Location<T> target) {
+        this.target = target;
+        return this;
+    }
 
-	@Override
-	public Hide<T> setArrivalTolerance (float arrivalTolerance) {
-		this.arrivalTolerance = arrivalTolerance;
-		return this;
-	}
+    @Override
+    public Hide<T> setArrivalTolerance(float arrivalTolerance) {
+        this.arrivalTolerance = arrivalTolerance;
+        return this;
+    }
 
-	@Override
-	public Hide<T> setDecelerationRadius (float decelerationRadius) {
-		this.decelerationRadius = decelerationRadius;
-		return this;
-	}
+    @Override
+    public Hide<T> setDecelerationRadius(float decelerationRadius) {
+        this.decelerationRadius = decelerationRadius;
+        return this;
+    }
 
-	@Override
-	public Hide<T> setTimeToTarget (float timeToTarget) {
-		this.timeToTarget = timeToTarget;
-		return this;
-	}
+    @Override
+    public Hide<T> setTimeToTarget(float timeToTarget) {
+        this.timeToTarget = timeToTarget;
+        return this;
+    }
 
 }

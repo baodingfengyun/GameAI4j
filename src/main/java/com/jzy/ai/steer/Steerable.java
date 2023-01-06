@@ -20,31 +20,43 @@ package com.jzy.ai.steer;
 import com.jzy.ai.util.Location;
 import com.jzy.javalib.math.geometry.Vector;
 
-/**可转向对象接口<br>
+/**
+ * 可转向对象接口<br>
  * A {@code Steerable} is a {@link Location} that gives access to the character's data required by steering system.
  * <p>
  * Notice that there is nothing to connect the direction that a Steerable is moving and the direction it is facing. For
  * instance, a character can be oriented along the x-axis but be traveling directly along the y-axis.
  *
  * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
- *
- * @author davebaol */
+ * @author davebaol
+ */
 public interface Steerable<T extends Vector<T>> extends Location<T>, Limiter {
 
-    /** Returns the vector indicating the linear velocity of this Steerable. */
-    public T getLinearVelocity ();
+    /**
+     * Returns the vector indicating the linear velocity of this Steerable.
+     */
+    public T getLinearVelocity();
 
-    /** Returns the float value indicating the the angular velocity in radians of this Steerable. */
-    public float getAngularVelocity ();
+    /**
+     * Returns the float value indicating the the angular velocity in radians of this Steerable.
+     */
+    public float getAngularVelocity();
 
-    /** Returns the bounding radius of this Steerable. */
-    public float getBoundingRadius ();
+    /**
+     * Returns the bounding radius of this Steerable.
+     */
+    public float getBoundingRadius();
 
-    /** Returns {@code true} if this Steerable is tagged; {@code false} otherwise. */
-    public boolean isTagged ();
+    /**
+     * Returns {@code true} if this Steerable is tagged; {@code false} otherwise.
+     */
+    public boolean isTagged();
 
-    /** Tag/untag this Steerable. This is a generic flag utilized in a variety of ways.
-     * @param tagged the boolean value to set */
-    public void setTagged (boolean tagged);
+    /**
+     * Tag/untag this Steerable. This is a generic flag utilized in a variety of ways.
+     *
+     * @param tagged the boolean value to set
+     */
+    public void setTagged(boolean tagged);
 
 }

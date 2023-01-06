@@ -8,5 +8,5 @@ public interface IMemoryObject {
     /**
      * 对象释放
      */
-    public void release();
+    void release();
 }

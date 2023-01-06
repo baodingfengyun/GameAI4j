@@ -1,36 +1,41 @@
 package com.jzy.ai.util;
 
 /*******************************************************************************
-* Copyright 2014 See AUTHORS file.
-        *
-        * Licensed under the Apache License, Version 2.0 (the "License");
-        * you may not use this file except in compliance with the License.
-        * You may obtain a copy of the License at
-        *
-        *   http://www.apache.org/licenses/LICENSE-2.0
-        *
-        * Unless required by applicable law or agreed to in writing, software
-        * distributed under the License is distributed on an "AS IS" BASIS,
-        * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-        * See the License for the specific language governing permissions and
-        * limitations under the License.
-        ******************************************************************************/
+ * Copyright 2014 See AUTHORS file.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ******************************************************************************/
 
 
 import com.jzy.javalib.base.util.MathUtil;
 
-/** Some useful math functions.
+/**
+ * Some useful math functions.
  *
- * @author davebaol */
+ * @author davebaol
+ */
 public final class ArithmeticUtils {
 
-    private ArithmeticUtils () {
+    private ArithmeticUtils() {
     }
 
-    /** Wraps the given angle to the range [-PI, PI]
+    /**
+     * Wraps the given angle to the range [-PI, PI]
+     *
      * @param a the angle in radians
-     * @return the given angle wrapped to the range [-PI, PI] */
-    public static float wrapAngleAroundZero (float a) {
+     * @return the given angle wrapped to the range [-PI, PI]
+     */
+    public static float wrapAngleAroundZero(float a) {
         if (a >= 0) {
             float rotation = a % MathUtil.PI2;
             if (rotation > MathUtil.PI) rotation -= MathUtil.PI2;
@@ -42,7 +47,8 @@ public final class ArithmeticUtils {
         }
     }
 
-    /** Returns the greatest common divisor of two <em>positive</em> numbers (this precondition is <em>not</em> checked and the
+    /**
+     * Returns the greatest common divisor of two <em>positive</em> numbers (this precondition is <em>not</em> checked and the
      * result is undefined if not fulfilled) using the "binary gcd" method which avoids division and modulo operations. See Knuth
      * 4.5.2 algorithm B. The algorithm is due to Josef Stein (1961).
      * <p>
@@ -54,8 +60,9 @@ public final class ArithmeticUtils {
      *
      * @param a a non negative number.
      * @param b a non negative number.
-     * @return the greatest common divisor. */
-    public static int gcdPositive (int a, int b) {
+     * @return the greatest common divisor.
+     */
+    public static int gcdPositive(int a, int b) {
         if (a == 0) return b;
 
         if (b == 0) return a;
@@ -86,7 +93,8 @@ public final class ArithmeticUtils {
         return a << shift;
     }
 
-    /** Returns the least common multiple of the absolute value of two numbers, using the formula
+    /**
+     * Returns the least common multiple of the absolute value of two numbers, using the formula
      * {@code lcm(a, b) = (a / gcd(a, b)) * b}.
      * <p>
      * Special cases:
@@ -99,8 +107,9 @@ public final class ArithmeticUtils {
      * @param a a non-negative number.
      * @param b a non-negative number.
      * @return the least common multiple, never negative.
-     * @throws ArithmeticException if the result cannot be represented as a non-negative {@code int} value. */
-    public static int lcmPositive (int a, int b) throws ArithmeticException {
+     * @throws ArithmeticException if the result cannot be represented as a non-negative {@code int} value.
+     */
+    public static int lcmPositive(int a, int b) throws ArithmeticException {
         if (a == 0 || b == 0) return 0;
 
         int lcm = Math.abs(mulAndCheck(a / gcdPositive(a, b), b));
@@ -110,13 +119,16 @@ public final class ArithmeticUtils {
         return lcm;
     }
 
-    /** Returns the greatest common divisor of the given absolute values. This implementation uses {@link #gcdPositive(int, int)}
+    /**
+     * Returns the greatest common divisor of the given absolute values. This implementation uses {@link #gcdPositive(int, int)}
      * and has the same special cases.
      *
      * @param args non-negative numbers
-     * @return the greatest common divisor. */
-    public static int gcdPositive (int... args) {
-        if (args == null || args.length < 2) throw new IllegalArgumentException("gcdPositive requires at least two arguments");
+     * @return the greatest common divisor.
+     */
+    public static int gcdPositive(int... args) {
+        if (args == null || args.length < 2)
+            throw new IllegalArgumentException("gcdPositive requires at least two arguments");
         int result = args[0];
         int n = args.length;
         for (int i = 1; i < n; i++) {
@@ -125,14 +137,17 @@ public final class ArithmeticUtils {
         return result;
     }
 
-    /** Returns the least common multiple of the given absolute values. This implementation uses {@link #lcmPositive(int, int)} and
+    /**
+     * Returns the least common multiple of the given absolute values. This implementation uses {@link #lcmPositive(int, int)} and
      * has the same special cases.
      *
      * @param args non-negative numbers
      * @return the least common multiple, never negative.
-     * @throws ArithmeticException if the result cannot be represented as a non-negative {@code int} value. */
-    public static int lcmPositive (int... args) {
-        if (args == null || args.length < 2) throw new IllegalArgumentException("lcmPositive requires at least two arguments");
+     * @throws ArithmeticException if the result cannot be represented as a non-negative {@code int} value.
+     */
+    public static int lcmPositive(int... args) {
+        if (args == null || args.length < 2)
+            throw new IllegalArgumentException("lcmPositive requires at least two arguments");
         int result = args[0];
         int n = args.length;
         for (int i = 1; i < n; i++) {
@@ -141,17 +156,19 @@ public final class ArithmeticUtils {
         return result;
     }
 
-    /** Multiply two integers, checking for overflow.
+    /**
+     * Multiply two integers, checking for overflow.
      *
      * @param x first factor
      * @param y second factor
      * @return the product {@code x * y}.
-     * @throws ArithmeticException if the result can not be represented as an {@code int}. */
-    public static int mulAndCheck (int x, int y) throws ArithmeticException {
-        long m = ((long)x) * ((long)y);
+     * @throws ArithmeticException if the result can not be represented as an {@code int}.
+     */
+    public static int mulAndCheck(int x, int y) throws ArithmeticException {
+        long m = ((long) x) * ((long) y);
         if (m < Integer.MIN_VALUE || m > Integer.MAX_VALUE) {
             throw new ArithmeticException();
         }
-        return (int)m;
+        return (int) m;
     }
 }

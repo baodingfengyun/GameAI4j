@@ -40,42 +40,54 @@ import com.jzy.javalib.math.geometry.Vector;
  * {@code maxPredictionTime} for this reason. If the prediction time is beyond this, then the maximum time is used.
  *
  * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
- *
- * @author davebaol */
+ * @author davebaol
+ */
 public class Pursue<T extends Vector<T>> extends SteeringBehavior<T> {
 
-    /** The target */
+    /**
+     * The target
+     */
     protected Steerable<T> target;
 
-    /** The maximum prediction time */
+    /**
+     * The maximum prediction time
+     */
     protected float maxPredictionTime;
 
-    /** Creates a {@code Pursue} behavior for the specified owner and target. Maximum prediction time defaults to 1 second.
-     * @param owner the owner of this behavior.
-     * @param target the target of this behavior. */
-    public Pursue (Steerable<T> owner, Steerable<T> target) {
+    /**
+     * Creates a {@code Pursue} behavior for the specified owner and target. Maximum prediction time defaults to 1 second.
+     *
+     * @param owner  the owner of this behavior.
+     * @param target the target of this behavior.
+     */
+    public Pursue(Steerable<T> owner, Steerable<T> target) {
         this(owner, target, 1);
     }
 
-    /** Creates a {@code Pursue} behavior for the specified owner and target.
-     * @param owner the owner of this behavior
-     * @param target the target of this behavior
+    /**
+     * Creates a {@code Pursue} behavior for the specified owner and target.
+     *
+     * @param owner             the owner of this behavior
+     * @param target            the target of this behavior
      * @param maxPredictionTime the max time used to predict the target's position assuming it continues to move with its current
-     *           velocity. */
-    public Pursue (Steerable<T> owner, Steerable<T> target, float maxPredictionTime) {
+     *                          velocity.
+     */
+    public Pursue(Steerable<T> owner, Steerable<T> target, float maxPredictionTime) {
         super(owner);
         this.target = target;
         this.maxPredictionTime = maxPredictionTime;
     }
 
-    /** Returns the actual linear acceleration to be applied. This method is overridden by the {@link Evade} behavior to invert the
-     * maximum linear acceleration in order to evade the target. */
-    protected float getActualMaxLinearAcceleration () {
+    /**
+     * Returns the actual linear acceleration to be applied. This method is overridden by the {@link Evade} behavior to invert the
+     * maximum linear acceleration in order to evade the target.
+     */
+    protected float getActualMaxLinearAcceleration() {
         return getActualLimiter().getMaxLinearAcceleration();
     }
 
     @Override
-    protected SteeringAcceleration<T> calculateRealSteering (SteeringAcceleration<T> steering) {
+    protected SteeringAcceleration<T> calculateRealSteering(SteeringAcceleration<T> steering) {
         T targetPosition = target.getPosition();
 
         // Get the square distance to the evader (the target)
@@ -90,7 +102,7 @@ public class Pursue<T extends Vector<T>> extends SteeringBehavior<T> {
             // Calculate prediction time if speed is not too small to give a reasonable value
             float squarePredictionTime = squareDistance / squareSpeed;
             if (squarePredictionTime < maxPredictionTime * maxPredictionTime)
-                predictionTime = (float)Math.sqrt(squarePredictionTime);
+                predictionTime = (float) Math.sqrt(squarePredictionTime);
         }
 
         // Calculate and seek/flee the predicted position of the target
@@ -104,26 +116,36 @@ public class Pursue<T extends Vector<T>> extends SteeringBehavior<T> {
         return steering;
     }
 
-    /** Returns the target. */
-    public Steerable<T> getTarget () {
+    /**
+     * Returns the target.
+     */
+    public Steerable<T> getTarget() {
         return target;
     }
 
-    /** Sets the target.
-     * @return this behavior for chaining. */
-    public Pursue<T> setTarget (Steerable<T> target) {
+    /**
+     * Sets the target.
+     *
+     * @return this behavior for chaining.
+     */
+    public Pursue<T> setTarget(Steerable<T> target) {
         this.target = target;
         return this;
     }
 
-    /** Returns the maximum prediction time. */
-    public float getMaxPredictionTime () {
+    /**
+     * Returns the maximum prediction time.
+     */
+    public float getMaxPredictionTime() {
         return maxPredictionTime;
     }
 
-    /** Sets the maximum prediction time.
-     * @return this behavior for chaining. */
-    public Pursue<T> setMaxPredictionTime (float maxPredictionTime) {
+    /**
+     * Sets the maximum prediction time.
+     *
+     * @return this behavior for chaining.
+     */
+    public Pursue<T> setMaxPredictionTime(float maxPredictionTime) {
         this.maxPredictionTime = maxPredictionTime;
         return this;
     }
@@ -133,21 +155,24 @@ public class Pursue<T extends Vector<T>> extends SteeringBehavior<T> {
     //
 
     @Override
-    public Pursue<T> setOwner (Steerable<T> owner) {
+    public Pursue<T> setOwner(Steerable<T> owner) {
         this.owner = owner;
         return this;
     }
 
     @Override
-    public Pursue<T> setEnabled (boolean enabled) {
+    public Pursue<T> setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
-    /** Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum linear acceleration.
-     * @return this behavior for chaining. */
+    /**
+     * Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum linear acceleration.
+     *
+     * @return this behavior for chaining.
+     */
     @Override
-    public Pursue<T> setLimiter (Limiter limiter) {
+    public Pursue<T> setLimiter(Limiter limiter) {
         this.limiter = limiter;
         return this;
     }

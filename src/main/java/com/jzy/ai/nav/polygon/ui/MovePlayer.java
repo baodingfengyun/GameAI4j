@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * 移动玩家
+ *
  * @fix JiangZhiYong
  */
 public class MovePlayer {
@@ -19,8 +20,8 @@ public class MovePlayer {
     protected Vector3 pos = new Vector3();
     protected Vector3 target = new Vector3();
     protected Vector3 targetAdjusted = new Vector3();
-    protected List<Vector3> paths=new ArrayList<>();
-    protected PolygonPointPath navMeshPointPath=new PolygonPointPath();
+    protected List<Vector3> paths = new ArrayList<>();
+    protected PolygonPointPath navMeshPointPath = new PolygonPointPath();
     protected float speed;
     protected float speedX;
     protected float speedZ;
@@ -29,13 +30,13 @@ public class MovePlayer {
     protected PolygonNavMesh map;
 
     public MovePlayer(PolygonNavMesh map) {
-        speed = 50*map.getGraph().getScale();
+        speed = 50 * map.getGraph().getScale();
         this.map = map;
     }
 
     public void path() {
         long time = TimeUtil.currentTimeMillis();
-        paths= map.findPath(pos, targetAdjusted, navMeshPointPath);	
+        paths = map.findPath(pos, targetAdjusted, navMeshPointPath);
         time = TimeUtil.currentTimeMillis() - time;
 //        System.out.println("寻路耗时：" + time);
     }
@@ -46,17 +47,17 @@ public class MovePlayer {
         }
 //        pos = map.getNearestPointInPaths(pos);	//TODO 获取不在路径中的周围坐标点
 //        targetAdjusted = map.getNearestPointInPaths(target);
-        targetAdjusted=target;
+        targetAdjusted = target;
         if (speed == 0) {
             return;
         }
         double secondsLeft = seconds;
-        for (int i = 0; i <paths.size(); i++) {
-            currentTargetPoint =paths.get(i);
+        for (int i = 0; i < paths.size(); i++) {
+            currentTargetPoint = paths.get(i);
             Vector3 oldPos = new Vector3();
             oldPos.x = pos.x;
             oldPos.z = pos.z;
-            double distUntilTargetReached =Vector3.dst(currentTargetPoint.x, currentTargetPoint.z, pos.x, pos.z);
+            double distUntilTargetReached = Vector3.dst(currentTargetPoint.x, currentTargetPoint.z, pos.x, pos.z);
             double timeUntilTargetReached = distUntilTargetReached / speed;
             if (timeUntilTargetReached < 0) {
                 return;
@@ -101,10 +102,24 @@ public class MovePlayer {
     }
 
     /**
+     * @param pos the pos to set
+     */
+    public void setPos(Vector3 pos) {
+        this.pos = pos;
+    }
+
+    /**
      * @return the targetAdjusted
      */
     public Vector3 getTargetAdjusted() {
         return targetAdjusted;
+    }
+
+    /**
+     * @param targetAdjusted the targetAdjusted to set
+     */
+    public void setTargetAdjusted(Vector3 targetAdjusted) {
+        this.targetAdjusted = targetAdjusted;
     }
 
     /**
@@ -115,24 +130,10 @@ public class MovePlayer {
     }
 
     /**
-     * @param pos the pos to set
-     */
-    public void setPos(Vector3 pos) {
-        this.pos = pos;
-    }
-
-    /**
      * @param target the target to set
      */
     public void setTarget(Vector3 target) {
         this.target = target;
-    }
-
-    /**
-     * @param targetAdjusted the targetAdjusted to set
-     */
-    public void setTargetAdjusted(Vector3 targetAdjusted) {
-        this.targetAdjusted = targetAdjusted;
     }
 
     /**
@@ -149,9 +150,9 @@ public class MovePlayer {
         this.map = map;
     }
 
-	public List<Vector3> getPaths() {
-		return paths;
-	}
-    
-    
+    public List<Vector3> getPaths() {
+        return paths;
+    }
+
+
 }

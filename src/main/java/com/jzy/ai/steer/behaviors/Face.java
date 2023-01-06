@@ -29,29 +29,35 @@ import com.jzy.javalib.math.geometry.Vector;
  * rotation but calculates the target orientation first based on target and owner position.
  *
  * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
- *
- * @author davebaol */
+ * @author davebaol
+ */
 public class Face<T extends Vector<T>> extends ReachOrientation<T> {
 
-    /** Creates a {@code Face} behavior for the specified owner.
-     * @param owner the owner of this behavior. */
-    public Face (Steerable<T> owner) {
+    /**
+     * Creates a {@code Face} behavior for the specified owner.
+     *
+     * @param owner the owner of this behavior.
+     */
+    public Face(Steerable<T> owner) {
         this(owner, null);
     }
 
-    /** Creates a {@code Face} behavior for the specified owner and target.
-     * @param owner the owner of this behavior
-     * @param target the target of this behavior. */
-    public Face (Steerable<T> owner, Location<T> target) {
+    /**
+     * Creates a {@code Face} behavior for the specified owner and target.
+     *
+     * @param owner  the owner of this behavior
+     * @param target the target of this behavior.
+     */
+    public Face(Steerable<T> owner, Location<T> target) {
         super(owner, target);
     }
 
     @Override
-    protected SteeringAcceleration<T> calculateRealSteering (SteeringAcceleration<T> steering) {
+    protected SteeringAcceleration<T> calculateRealSteering(SteeringAcceleration<T> steering) {
         return face(steering, target.getPosition());
     }
 
-    protected SteeringAcceleration<T> face (SteeringAcceleration<T> steering, T targetPosition) {
+    protected SteeringAcceleration<T> face(SteeringAcceleration<T> steering, T targetPosition) {
         // Get the direction to target
         T toTarget = steering.linear.set(targetPosition).sub(owner.getPosition());
 
@@ -70,46 +76,49 @@ public class Face<T extends Vector<T>> extends ReachOrientation<T> {
     //
 
     @Override
-    public Face<T> setOwner (Steerable<T> owner) {
+    public Face<T> setOwner(Steerable<T> owner) {
         this.owner = owner;
         return this;
     }
 
     @Override
-    public Face<T> setEnabled (boolean enabled) {
+    public Face<T> setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
-    /** Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum angular speed and
+    /**
+     * Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum angular speed and
      * acceleration.
-     * @return this behavior for chaining. */
+     *
+     * @return this behavior for chaining.
+     */
     @Override
-    public Face<T> setLimiter (Limiter limiter) {
+    public Face<T> setLimiter(Limiter limiter) {
         this.limiter = limiter;
         return this;
     }
 
     @Override
-    public Face<T> setTarget (Location<T> target) {
+    public Face<T> setTarget(Location<T> target) {
         this.target = target;
         return this;
     }
 
     @Override
-    public Face<T> setAlignTolerance (float alignTolerance) {
+    public Face<T> setAlignTolerance(float alignTolerance) {
         this.alignTolerance = alignTolerance;
         return this;
     }
 
     @Override
-    public Face<T> setDecelerationRadius (float decelerationRadius) {
+    public Face<T> setDecelerationRadius(float decelerationRadius) {
         this.decelerationRadius = decelerationRadius;
         return this;
     }
 
     @Override
-    public Face<T> setTimeToTarget (float timeToTarget) {
+    public Face<T> setTimeToTarget(float timeToTarget) {
         this.timeToTarget = timeToTarget;
         return this;
     }

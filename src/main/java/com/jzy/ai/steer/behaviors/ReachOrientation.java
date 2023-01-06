@@ -25,7 +25,8 @@ import com.jzy.ai.util.ArithmeticUtils;
 import com.jzy.ai.util.Location;
 import com.jzy.javalib.math.geometry.Vector;
 
-/** {@code ReachOrientation} tries to align the owner to the target. It pays no attention to the position or velocity of the owner
+/**
+ * {@code ReachOrientation} tries to align the owner to the target. It pays no attention to the position or velocity of the owner
  * or target. This steering behavior does not produce any linear acceleration; it only responds by turning.
  * <p>
  * {@code ReachOrientation} behaves in a similar way to {@link Arrive} since it tries to reach the target orientation and tries to
@@ -36,47 +37,64 @@ import com.jzy.javalib.math.geometry.Vector;
  * Similarly to {@code Arrive}, there is a {@code timeToTarget} that defaults to 0.1 seconds.
  *
  * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
- *
- * @author davebaol */
+ * @author davebaol
+ */
 public class ReachOrientation<T extends Vector<T>> extends SteeringBehavior<T> {
 
-    /** The target to align to. */
+    /**
+     * The target to align to.
+     */
     protected Location<T> target;
 
-    /** The tolerance for aligning to the target without letting small errors keep the owner swinging. */
+    /**
+     * The tolerance for aligning to the target without letting small errors keep the owner swinging.
+     */
     protected float alignTolerance;
 
-    /** The radius for beginning to slow down */
+    /**
+     * The radius for beginning to slow down
+     */
     protected float decelerationRadius;
 
-    /** The time over which to achieve target rotation speed */
+    /**
+     * The time over which to achieve target rotation speed
+     */
     protected float timeToTarget = 0.1f;
 
-    /** Creates a {@code ReachOrientation} behavior for the specified owner.
-     * @param owner the owner of this behavior. */
-    public ReachOrientation (Steerable<T> owner) {
+    /**
+     * Creates a {@code ReachOrientation} behavior for the specified owner.
+     *
+     * @param owner the owner of this behavior.
+     */
+    public ReachOrientation(Steerable<T> owner) {
         this(owner, null);
     }
 
-    /** Creates a {@code ReachOrientation} behavior for the specified owner and target.
-     * @param owner the owner of this behavior
-     * @param target the target. */
-    public ReachOrientation (Steerable<T> owner, Location<T> target) {
+    /**
+     * Creates a {@code ReachOrientation} behavior for the specified owner and target.
+     *
+     * @param owner  the owner of this behavior
+     * @param target the target.
+     */
+    public ReachOrientation(Steerable<T> owner, Location<T> target) {
         super(owner);
         this.target = target;
     }
 
     @Override
-    protected SteeringAcceleration<T> calculateRealSteering (SteeringAcceleration<T> steering) {
+    protected SteeringAcceleration<T> calculateRealSteering(SteeringAcceleration<T> steering) {
         return reachOrientation(steering, target.getOrientation());
     }
 
-    /** Produces a steering that tries to align the owner to the target orientation. This method is called by subclasses that want
+    /**
+     * Produces a steering that tries to align the owner to the target orientation. This method is called by subclasses that want
      * to align to a certain orientation.
-     * @param steering the steering to be calculated.
+     *
+     * @param steering          the steering to be calculated.
      * @param targetOrientation the target orientation you want to align to.
-     * @return the calculated steering for chaining. */
-    protected SteeringAcceleration<T> reachOrientation (SteeringAcceleration<T> steering, float targetOrientation) {
+     * @return the calculated steering for chaining.
+     */
+    protected SteeringAcceleration<T> reachOrientation(SteeringAcceleration<T> steering, float targetOrientation) {
         // Get the rotation direction to the target wrapped to the range [-PI, PI]
         float rotation = ArithmeticUtils.wrapAngleAroundZero(targetOrientation - owner.getOrientation());
 
@@ -113,50 +131,70 @@ public class ReachOrientation<T extends Vector<T>> extends SteeringBehavior<T> {
         return steering;
     }
 
-    /** Returns the target to align to. */
-    public Location<T> getTarget () {
+    /**
+     * Returns the target to align to.
+     */
+    public Location<T> getTarget() {
         return target;
     }
 
-    /** Sets the target to align to.
-     * @return this behavior for chaining. */
-    public ReachOrientation<T> setTarget (Location<T> target) {
+    /**
+     * Sets the target to align to.
+     *
+     * @return this behavior for chaining.
+     */
+    public ReachOrientation<T> setTarget(Location<T> target) {
         this.target = target;
         return this;
     }
 
-    /** Returns the tolerance for aligning to the target without letting small errors keep the owner swinging. */
-    public float getAlignTolerance () {
+    /**
+     * Returns the tolerance for aligning to the target without letting small errors keep the owner swinging.
+     */
+    public float getAlignTolerance() {
         return alignTolerance;
     }
 
-    /** Sets the tolerance for aligning to the target without letting small errors keep the owner swinging.
-     * @return this behavior for chaining. */
-    public ReachOrientation<T> setAlignTolerance (float alignTolerance) {
+    /**
+     * Sets the tolerance for aligning to the target without letting small errors keep the owner swinging.
+     *
+     * @return this behavior for chaining.
+     */
+    public ReachOrientation<T> setAlignTolerance(float alignTolerance) {
         this.alignTolerance = alignTolerance;
         return this;
     }
 
-    /** Returns the radius for beginning to slow down */
-    public float getDecelerationRadius () {
+    /**
+     * Returns the radius for beginning to slow down
+     */
+    public float getDecelerationRadius() {
         return decelerationRadius;
     }
 
-    /** Sets the radius for beginning to slow down
-     * @return this behavior for chaining. */
-    public ReachOrientation<T> setDecelerationRadius (float decelerationRadius) {
+    /**
+     * Sets the radius for beginning to slow down
+     *
+     * @return this behavior for chaining.
+     */
+    public ReachOrientation<T> setDecelerationRadius(float decelerationRadius) {
         this.decelerationRadius = decelerationRadius;
         return this;
     }
 
-    /** Returns the time over which to achieve target rotation speed */
-    public float getTimeToTarget () {
+    /**
+     * Returns the time over which to achieve target rotation speed
+     */
+    public float getTimeToTarget() {
         return timeToTarget;
     }
 
-    /** Sets the time over which to achieve target rotation speed
-     * @return this behavior for chaining. */
-    public ReachOrientation<T> setTimeToTarget (float timeToTarget) {
+    /**
+     * Sets the time over which to achieve target rotation speed
+     *
+     * @return this behavior for chaining.
+     */
+    public ReachOrientation<T> setTimeToTarget(float timeToTarget) {
         this.timeToTarget = timeToTarget;
         return this;
     }
@@ -166,22 +204,25 @@ public class ReachOrientation<T extends Vector<T>> extends SteeringBehavior<T> {
     //
 
     @Override
-    public ReachOrientation<T> setOwner (Steerable<T> owner) {
+    public ReachOrientation<T> setOwner(Steerable<T> owner) {
         this.owner = owner;
         return this;
     }
 
     @Override
-    public ReachOrientation<T> setEnabled (boolean enabled) {
+    public ReachOrientation<T> setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
-    /** Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum angular speed and
+    /**
+     * Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum angular speed and
      * acceleration.
-     * @return this behavior for chaining. */
+     *
+     * @return this behavior for chaining.
+     */
     @Override
-    public ReachOrientation<T> setLimiter (Limiter limiter) {
+    public ReachOrientation<T> setLimiter(Limiter limiter) {
         this.limiter = limiter;
         return this;
     }

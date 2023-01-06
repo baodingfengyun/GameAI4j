@@ -17,41 +17,63 @@ package com.jzy.ai.steer;
  ******************************************************************************/
 
 
-/** A {@code Limiter} provides the maximum magnitudes of speed and acceleration for both linear and angular components.
+/**
+ * A {@code Limiter} provides the maximum magnitudes of speed and acceleration for both linear and angular components.
  *
- * @author davebaol */
+ * @author davebaol
+ */
 public interface Limiter {
 
-    /** Returns the threshold below which the linear speed can be considered zero. It must be a small positive value near to zero.
-     * Usually it is used to avoid updating the orientation when the velocity vector has a negligible length. */
-    public float getZeroLinearSpeedThreshold ();
+    /**
+     * Returns the threshold below which the linear speed can be considered zero. It must be a small positive value near to zero.
+     * Usually it is used to avoid updating the orientation when the velocity vector has a negligible length.
+     */
+    public float getZeroLinearSpeedThreshold();
 
-    /** Sets the threshold below which the linear speed can be considered zero. It must be a small positive value near to zero.
-     * Usually it is used to avoid updating the orientation when the velocity vector has a negligible length. */
-    public void setZeroLinearSpeedThreshold (float value);
+    /**
+     * Sets the threshold below which the linear speed can be considered zero. It must be a small positive value near to zero.
+     * Usually it is used to avoid updating the orientation when the velocity vector has a negligible length.
+     */
+    public void setZeroLinearSpeedThreshold(float value);
 
-    /** Returns the maximum linear speed. */
-    public float getMaxLinearSpeed ();
+    /**
+     * Returns the maximum linear speed.
+     */
+    public float getMaxLinearSpeed();
 
-    /** Sets the maximum linear speed. */
-    public void setMaxLinearSpeed (float maxLinearSpeed);
+    /**
+     * Sets the maximum linear speed.
+     */
+    public void setMaxLinearSpeed(float maxLinearSpeed);
 
-    /** Returns the maximum linear acceleration. */
-    public float getMaxLinearAcceleration ();
+    /**
+     * Returns the maximum linear acceleration.
+     */
+    public float getMaxLinearAcceleration();
 
-    /** Sets the maximum linear acceleration. */
-    public void setMaxLinearAcceleration (float maxLinearAcceleration);
+    /**
+     * Sets the maximum linear acceleration.
+     */
+    public void setMaxLinearAcceleration(float maxLinearAcceleration);
 
-    /** Returns the maximum angular speed. */
-    public float getMaxAngularSpeed ();
+    /**
+     * Returns the maximum angular speed.
+     */
+    public float getMaxAngularSpeed();
 
-    /** Sets the maximum angular speed. */
-    public void setMaxAngularSpeed (float maxAngularSpeed);
+    /**
+     * Sets the maximum angular speed.
+     */
+    public void setMaxAngularSpeed(float maxAngularSpeed);
 
-    /** Returns the maximum angular acceleration. */
-    public float getMaxAngularAcceleration ();
+    /**
+     * Returns the maximum angular acceleration.
+     */
+    public float getMaxAngularAcceleration();
 
-    /** Sets the maximum angular acceleration. */
-    public void setMaxAngularAcceleration (float maxAngularAcceleration);
+    /**
+     * Sets the maximum angular acceleration.
+     */
+    public void setMaxAngularAcceleration(float maxAngularAcceleration);
 }
 

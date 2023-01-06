@@ -19,23 +19,22 @@ import java.awt.image.BufferedImage;
 public class TriangleViewPane extends JPanel {
 
     private static final long serialVersionUID = 1L;
+    protected final TrianglePlayer player;
     protected Image backImage;
     protected Graphics2D backImageGraphics2D;
-    protected final TrianglePlayer player;
-
+    protected boolean isRenderRandomPoints; // 是否渲染随机点
+    protected boolean isShowTriangleIndex;  //是否显示三角形序号
+    protected boolean isShowVectorIndex;  //是否显示坐标序号
     Vector3 center = new Vector3(220, 0, 220);
     Vector3 test = new Vector3(250, 0, 250);
     Vector3 translate;
     Vector3 direction;
     Vector3 stop;
     Triangle triangle = null;
-    protected boolean isRenderRandomPoints; // 是否渲染随机点
-    protected boolean isShowTriangleIndex;  //是否显示三角形序号
-    protected boolean isShowVectorIndex;  //是否显示坐标序号
 
     public TriangleViewPane(TrianglePlayer player) {
         this.player = player;
-       stop = getStopPoint(center, test, 5);
+        stop = getStopPoint(center, test, 5);
 
     }
 
@@ -97,24 +96,24 @@ public class TriangleViewPane extends JPanel {
                 g.drawString(String.valueOf(triangle.index), triangle.center.x, triangle.center.z);
             }
             //坐标序号
-            if (this.isShowVectorIndex&&triangle.vectorIndex!=null) {
+            if (this.isShowVectorIndex && triangle.vectorIndex != null) {
                 g.setColor(Color.BLUE);
                 g.drawString(String.valueOf(triangle.vectorIndex[0]), triangle.a.x, triangle.a.z);
                 g.drawString(String.valueOf(triangle.vectorIndex[1]), triangle.b.x, triangle.b.z);
                 g.drawString(String.valueOf(triangle.vectorIndex[2]), triangle.c.x, triangle.c.z);
             }
             //三角形内随机点
-			if (isRenderRandomPoints) {		
-				g.setColor(Color.RED);
-				
-				Vector3 out=new Vector3();
-				float count = triangle.area()/100;
-				for(int i=0;i<count;i++) {
-					triangle.getRandomPoint(out);
-					g.fill(new Ellipse2D.Double(out.getX() - 3 / 2f, out.getZ() - 3 / 2f, 3, 3));
-				}
-			}
-			 g.setColor(triangleColor);
+            if (isRenderRandomPoints) {
+                g.setColor(Color.RED);
+
+                Vector3 out = new Vector3();
+                float count = triangle.area() / 100;
+                for (int i = 0; i < count; i++) {
+                    triangle.getRandomPoint(out);
+                    g.fill(new Ellipse2D.Double(out.getX() - 3 / 2f, out.getZ() - 3 / 2f, 3, 3));
+                }
+            }
+            g.setColor(triangleColor);
         }
 
         //渲染寻路路线

@@ -23,30 +23,37 @@ import com.jzy.ai.steer.SteeringAcceleration;
 import com.jzy.ai.util.Location;
 import com.jzy.javalib.math.geometry.Vector;
 
-/**逃离到某个坐标点<br>
+/**
+ * 逃离到某个坐标点<br>
  * {@code Flee} behavior does the opposite of {@link Seek}. It produces a linear steering force that moves the agent away from a
  * target position.
  *
  * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
- *
- * @author davebaol */
+ * @author davebaol
+ */
 public class Flee<T extends Vector<T>> extends Seek<T> {
 
-    /** Creates a {@code Flee} behavior for the specified owner.
-     * @param owner the owner of this behavior. */
-    public Flee (Steerable<T> owner) {
+    /**
+     * Creates a {@code Flee} behavior for the specified owner.
+     *
+     * @param owner the owner of this behavior.
+     */
+    public Flee(Steerable<T> owner) {
         this(owner, null);
     }
 
-    /** Creates a {@code Flee} behavior for the specified owner and target.
-     * @param owner the owner of this behavior
-     * @param target the target agent of this behavior. */
-    public Flee (Steerable<T> owner, Location<T> target) {
+    /**
+     * Creates a {@code Flee} behavior for the specified owner and target.
+     *
+     * @param owner  the owner of this behavior
+     * @param target the target agent of this behavior.
+     */
+    public Flee(Steerable<T> owner, Location<T> target) {
         super(owner, target);
     }
 
     @Override
-    protected SteeringAcceleration<T> calculateRealSteering (SteeringAcceleration<T> steering) {
+    protected SteeringAcceleration<T> calculateRealSteering(SteeringAcceleration<T> steering) {
         // We just do the opposite of seek, i.e. (owner.getPosition() - target.getPosition())
         // instead of (target.getPosition() - owner.getPosition())
         steering.linear.set(owner.getPosition()).sub(target.getPosition()).nor().scl(getActualLimiter().getMaxLinearAcceleration());
@@ -63,27 +70,30 @@ public class Flee<T extends Vector<T>> extends Seek<T> {
     //
 
     @Override
-    public Flee<T> setOwner (Steerable<T> owner) {
+    public Flee<T> setOwner(Steerable<T> owner) {
         this.owner = owner;
         return this;
     }
 
     @Override
-    public Flee<T> setEnabled (boolean enabled) {
+    public Flee<T> setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
-    /** Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum linear acceleration.
-     * @return this behavior for chaining. */
+    /**
+     * Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum linear acceleration.
+     *
+     * @return this behavior for chaining.
+     */
     @Override
-    public Flee<T> setLimiter (Limiter limiter) {
+    public Flee<T> setLimiter(Limiter limiter) {
         this.limiter = limiter;
         return this;
     }
 
     @Override
-    public Flee<T> setTarget (Location<T> target) {
+    public Flee<T> setTarget(Location<T> target) {
         this.target = target;
         return this;
     }

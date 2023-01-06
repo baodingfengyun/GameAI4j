@@ -27,28 +27,34 @@ import com.jzy.javalib.math.geometry.Vector;
  * the pursuer. Indeed, reversing the acceleration is all we have to do.
  *
  * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
- *
- * @author davebaol */
+ * @author davebaol
+ */
 public class Evade<T extends Vector<T>> extends Pursue<T> {
 
-    /** Creates a {@code Evade} behavior for the specified owner and target. Maximum prediction time defaults to 1 second.
-     * @param owner the owner of this behavior
-     * @param target the target of this behavior, typically a pursuer. */
-    public Evade (Steerable<T> owner, Steerable<T> target) {
+    /**
+     * Creates a {@code Evade} behavior for the specified owner and target. Maximum prediction time defaults to 1 second.
+     *
+     * @param owner  the owner of this behavior
+     * @param target the target of this behavior, typically a pursuer.
+     */
+    public Evade(Steerable<T> owner, Steerable<T> target) {
         this(owner, target, 1);
     }
 
-    /** Creates a {@code Evade} behavior for the specified owner and pursuer.
-     * @param owner the owner of this behavior
-     * @param target the target of this behavior, typically a pursuer
+    /**
+     * Creates a {@code Evade} behavior for the specified owner and pursuer.
+     *
+     * @param owner             the owner of this behavior
+     * @param target            the target of this behavior, typically a pursuer
      * @param maxPredictionTime the max time used to predict the pursuer's position assuming it continues to move with its current
-     *           velocity. */
-    public Evade (Steerable<T> owner, Steerable<T> target, float maxPredictionTime) {
+     *                          velocity.
+     */
+    public Evade(Steerable<T> owner, Steerable<T> target, float maxPredictionTime) {
         super(owner, target, maxPredictionTime);
     }
 
     @Override
-    protected float getActualMaxLinearAcceleration () {
+    protected float getActualMaxLinearAcceleration() {
         // Simply return the opposite of the max linear acceleration so to evade the target
         return -getActualLimiter().getMaxLinearAcceleration();
     }
@@ -58,27 +64,30 @@ public class Evade<T extends Vector<T>> extends Pursue<T> {
     //
 
     @Override
-    public Evade<T> setOwner (Steerable<T> owner) {
+    public Evade<T> setOwner(Steerable<T> owner) {
         this.owner = owner;
         return this;
     }
 
     @Override
-    public Evade<T> setEnabled (boolean enabled) {
+    public Evade<T> setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
-    /** Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum linear acceleration.
-     * @return this behavior for chaining. */
+    /**
+     * Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum linear acceleration.
+     *
+     * @return this behavior for chaining.
+     */
     @Override
-    public Evade<T> setLimiter (Limiter limiter) {
+    public Evade<T> setLimiter(Limiter limiter) {
         this.limiter = limiter;
         return this;
     }
 
     @Override
-    public Evade<T> setTarget (Steerable<T> target) {
+    public Evade<T> setTarget(Steerable<T> target) {
         this.target = target;
         return this;
     }

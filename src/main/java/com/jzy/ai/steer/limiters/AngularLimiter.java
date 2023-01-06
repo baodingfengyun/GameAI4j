@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright 2014 See AUTHORS file.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,45 +16,58 @@
 
 package com.jzy.ai.steer.limiters;
 
-/** An {@code AngularLimiter} provides the maximum magnitudes of angular speed and angular acceleration. Linear methods throw an
+/**
+ * An {@code AngularLimiter} provides the maximum magnitudes of angular speed and angular acceleration. Linear methods throw an
  * {@link UnsupportedOperationException}.
- * 
- * @author davebaol */
+ *
+ * @author davebaol
+ */
 public class AngularLimiter extends NullLimiter {
 
-	private float maxAngularAcceleration;
-	private float maxAngularSpeed;
+    private float maxAngularAcceleration;
+    private float maxAngularSpeed;
 
-	/** Creates an {@code AngularLimiter}.
-	 * @param maxAngularAcceleration the maximum angular acceleration
-	 * @param maxAngularSpeed the maximum angular speed */
-	public AngularLimiter (float maxAngularAcceleration, float maxAngularSpeed) {
-		this.maxAngularAcceleration = maxAngularAcceleration;
-		this.maxAngularSpeed = maxAngularSpeed;
-	}
+    /**
+     * Creates an {@code AngularLimiter}.
+     *
+     * @param maxAngularAcceleration the maximum angular acceleration
+     * @param maxAngularSpeed        the maximum angular speed
+     */
+    public AngularLimiter(float maxAngularAcceleration, float maxAngularSpeed) {
+        this.maxAngularAcceleration = maxAngularAcceleration;
+        this.maxAngularSpeed = maxAngularSpeed;
+    }
 
-	/** Returns the maximum angular speed. */
-	@Override
-	public float getMaxAngularSpeed () {
-		return maxAngularSpeed;
-	}
+    /**
+     * Returns the maximum angular speed.
+     */
+    @Override
+    public float getMaxAngularSpeed() {
+        return maxAngularSpeed;
+    }
 
-	/** Sets the maximum angular speed. */
-	@Override
-	public void setMaxAngularSpeed (float maxAngularSpeed) {
-		this.maxAngularSpeed = maxAngularSpeed;
-	}
+    /**
+     * Sets the maximum angular speed.
+     */
+    @Override
+    public void setMaxAngularSpeed(float maxAngularSpeed) {
+        this.maxAngularSpeed = maxAngularSpeed;
+    }
 
-	/** Returns the maximum angular acceleration. */
-	@Override
-	public float getMaxAngularAcceleration () {
-		return maxAngularAcceleration;
-	}
+    /**
+     * Returns the maximum angular acceleration.
+     */
+    @Override
+    public float getMaxAngularAcceleration() {
+        return maxAngularAcceleration;
+    }
 
-	/** Sets the maximum angular acceleration. */
-	@Override
-	public void setMaxAngularAcceleration (float maxAngularAcceleration) {
-		this.maxAngularAcceleration = maxAngularAcceleration;
-	}
+    /**
+     * Sets the maximum angular acceleration.
+     */
+    @Override
+    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
+        this.maxAngularAcceleration = maxAngularAcceleration;
+    }
 
 }

@@ -23,7 +23,8 @@ import com.jzy.ai.steer.SteeringAcceleration;
 import com.jzy.ai.util.Location;
 import com.jzy.javalib.math.geometry.Vector;
 
-/** The entire steering framework assumes that the direction a character is facing does not have to be its direction of motion. In
+/**
+ * The entire steering framework assumes that the direction a character is facing does not have to be its direction of motion. In
  * many cases, however, you would like the character to face in the direction it is moving. To do this you can manually align the
  * orientation of the character to its linear velocity on each frame update or you can use the {@code LookWhereYouAreGoing}
  * behavior.
@@ -37,20 +38,24 @@ import com.jzy.javalib.math.geometry.Vector;
  * situation for any orientation.
  *
  * @param <T> Type of vector, either 2D or 3D, implementing the {@link Vector} interface
- *
- * @author davebaol */
+ * @author davebaol
+ */
 public class LookWhereYouAreGoing<T extends Vector<T>> extends ReachOrientation<T> {
 
-    /** Creates a {@code LookWhereYouAreGoing} behavior for the specified owner.
-     * @param owner the owner of this behavior. */
-    public LookWhereYouAreGoing (Steerable<T> owner) {
+    /**
+     * Creates a {@code LookWhereYouAreGoing} behavior for the specified owner.
+     *
+     * @param owner the owner of this behavior.
+     */
+    public LookWhereYouAreGoing(Steerable<T> owner) {
         super(owner);
     }
 
     @Override
-    protected SteeringAcceleration<T> calculateRealSteering (SteeringAcceleration<T> steering) {
+    protected SteeringAcceleration<T> calculateRealSteering(SteeringAcceleration<T> steering) {
         // Check for a zero direction, and return no steering if so
-        if (owner.getLinearVelocity().isZero(getActualLimiter().getZeroLinearSpeedThreshold())) return steering.setZero();
+        if (owner.getLinearVelocity().isZero(getActualLimiter().getZeroLinearSpeedThreshold()))
+            return steering.setZero();
 
         // Calculate the orientation based on the velocity of the owner
         float orientation = owner.vectorToAngle(owner.getLinearVelocity());
@@ -64,49 +69,55 @@ public class LookWhereYouAreGoing<T extends Vector<T>> extends ReachOrientation<
     //
 
     @Override
-    public LookWhereYouAreGoing<T> setOwner (Steerable<T> owner) {
+    public LookWhereYouAreGoing<T> setOwner(Steerable<T> owner) {
         this.owner = owner;
         return this;
     }
 
     @Override
-    public LookWhereYouAreGoing<T> setEnabled (boolean enabled) {
+    public LookWhereYouAreGoing<T> setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
 
-    /** Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum angular speed and
+    /**
+     * Sets the limiter of this steering behavior. The given limiter must at least take care of the maximum angular speed and
      * acceleration.
-     * @return this behavior for chaining. */
+     *
+     * @return this behavior for chaining.
+     */
     @Override
-    public LookWhereYouAreGoing<T> setLimiter (Limiter limiter) {
+    public LookWhereYouAreGoing<T> setLimiter(Limiter limiter) {
         this.limiter = limiter;
         return this;
     }
 
-    /** Sets the target to align to. Notice that this method is inherited from {@link ReachOrientation}, but is completely useless
+    /**
+     * Sets the target to align to. Notice that this method is inherited from {@link ReachOrientation}, but is completely useless
      * for {@code LookWhereYouAreGoing} because the target orientation is determined by the velocity of the owner itself.
-     * @return this behavior for chaining. */
+     *
+     * @return this behavior for chaining.
+     */
     @Override
-    public LookWhereYouAreGoing<T> setTarget (Location<T> target) {
+    public LookWhereYouAreGoing<T> setTarget(Location<T> target) {
         this.target = target;
         return this;
     }
 
     @Override
-    public LookWhereYouAreGoing<T> setAlignTolerance (float alignTolerance) {
+    public LookWhereYouAreGoing<T> setAlignTolerance(float alignTolerance) {
         this.alignTolerance = alignTolerance;
         return this;
     }
 
     @Override
-    public LookWhereYouAreGoing<T> setDecelerationRadius (float decelerationRadius) {
+    public LookWhereYouAreGoing<T> setDecelerationRadius(float decelerationRadius) {
         this.decelerationRadius = decelerationRadius;
         return this;
     }
 
     @Override
-    public LookWhereYouAreGoing<T> setTimeToTarget (float timeToTarget) {
+    public LookWhereYouAreGoing<T> setTimeToTarget(float timeToTarget) {
         this.timeToTarget = timeToTarget;
         return this;
     }

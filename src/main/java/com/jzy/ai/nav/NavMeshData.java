@@ -1,46 +1,59 @@
 package com.jzy.ai.nav;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.alibaba.fastjson.JSON;
 import com.jzy.javalib.math.geometry.Vector3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSON;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * navmesh寻路三角形网格数据 <br>
  * 依次三个顶点确定一个三角形
- * 
+ *
  * @author JiangZhiYong
  */
 public class NavMeshData implements Serializable {
     private static final Logger LOGGER = LoggerFactory.getLogger(NavMeshData.class);
     private static final long serialVersionUID = 1L;
 
-    /** 行走区顶点序号 */
+    /**
+     * 行走区顶点序号
+     */
     protected int[] pathTriangles;
-    /** 行走区坐标 */
+    /**
+     * 行走区坐标
+     */
     protected Vector3[] pathVertices;
 
-    /** 开始坐标 */
+    /**
+     * 开始坐标
+     */
     protected float startX;
     protected float startZ;
-    /** 结束坐标 */
+    /**
+     * 结束坐标
+     */
     protected float endX;
     protected float endZ;
-    /** navmesh地图id */
+    /**
+     * navmesh地图id
+     */
     protected int mapID;
 
-    protected transient float width;	// 宽
-    protected transient float height;	// 高
-    
-    /**地图中心位置*/
+    protected transient float width;    // 宽
+    protected transient float height;    // 高
+
+    /**
+     * 地图中心位置
+     */
     protected Vector3 centerPsoition;
-    
-    /**是否为3D地图*/
+
+    /**
+     * 是否为3D地图
+     */
     protected boolean threeDimensional;
 
     /**
@@ -53,12 +66,12 @@ public class NavMeshData implements Serializable {
 
         this.width = Math.abs(this.getEndX() - this.getStartX());
         this.height = Math.abs(this.getEndZ() - this.getStartZ());
-        this.centerPsoition=new Vector3((endX-startX)/2, (endZ-startZ)/2);
+        this.centerPsoition = new Vector3((endX - startX) / 2, (endZ - startZ) / 2);
     }
 
     /**
      * 缩放向量
-     * 
+     *
      * @param scale
      */
     protected void scaleVector(Vector3[] vertices, int scale) {
@@ -176,18 +189,18 @@ public class NavMeshData implements Serializable {
     }
 
     public Vector3 getCenterPsoition() {
-		return centerPsoition;
-	}
-    
-	public boolean isThreeDimensional() {
-		return threeDimensional;
-	}
+        return centerPsoition;
+    }
 
-	public void setThreeDimensional(boolean threeDimensional) {
-		this.threeDimensional = threeDimensional;
-	}
+    public boolean isThreeDimensional() {
+        return threeDimensional;
+    }
 
-	@Override
+    public void setThreeDimensional(boolean threeDimensional) {
+        this.threeDimensional = threeDimensional;
+    }
+
+    @Override
     public String toString() {
         return JSON.toJSONString(this);
     }
